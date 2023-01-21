@@ -28,12 +28,19 @@ function operate(operator, a, b) {
         case '+':
             return addition(a, b);
             case '-':
-              return subtraction(num1, num2);
+              return subtraction(a, b);
             case '*':
-              return multiplication(num1, num2);
+              return multiplication(a, b);
             case '/':
-              return division(num1, num2);
+              return division(a, b);
             default:
               return "Invalid operator";
-          };
+            };
         };
+
+const screenEntry = document.getElementById('bottomline');
+document.querySelector('#buttons').addEventListener('click', ({target}) => {
+    console.log(target.innerText);
+    let firstInput = screenEntry.innerHTML = target.innerText;
+    console.log('number 1: ' + firstInput);
+});

@@ -11,21 +11,26 @@ body {
     flex-direction: column;
     border: 2px solid #f8e1f4;
     background-color: #f8e1f4;
-    padding: 20px 20px 60px 20px;
+    padding: 20px 20px 100px 20px;
     border-radius: 25px;
-    margin-top: 150px;
+    margin-top: 100px;
 }
 
 #screen {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: column;
     width: 250px;
     height: 75px;
     border-radius: 15px;
     margin-bottom: 20px;
     background-color: #fff5fd;
     box-shadow: inset 2px 2px 5px 0.5px #f8e1f4;
+    font-family: 'Inconsolata', monospace;
+    font-size: 25pt;
+    padding: 10px;
+    color: hotpink;
 }
 
 #buttons{
@@ -35,18 +40,25 @@ body {
     width:250px;
     height: 250px;
     flex-wrap: wrap;
+    font-family: 'Inconsolata', monospace;
 }
 
 button {
     border-radius: 25px;
     width: 45px;
     height: 45px;
-    margin: 7px;
+    margin: 8.5px;
     background-color:#fff5fd;
     border: 1px #fff5fd;
     box-shadow: inset ;
+    font-family: 'Inconsolata', monospace;
+    font-size: large;
 }
 
 #equals {
-    width: 105px;
+    width: 109px;
+}
+
+p {
+    margin: 0px;
 }
