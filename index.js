@@ -18,29 +18,42 @@ function division(a, b) {
     return x;
 };
 
-addition();
-subtraction();
-multiplication();
-division();
 
-function operate(operator, a, b) {
+
+function operate(a, operator, b) {
     switch (operator) {
         case '+':
-            return addition(a, b);
-            case '-':
-              return subtraction(a, b);
-            case '*':
-              return multiplication(a, b);
-            case '/':
-              return division(a, b);
-            default:
-              return "Invalid operator";
-            };
-        };
+        return addition(a, b);
+        case '-':
+        return subtraction(a, b);
+        case '*':
+        return multiplication(a, b);
+        case '/':
+        return division(a, b);
+        default:
+        return "Invalid operator";
+    };
+};
 
-const screenEntry = document.getElementById('bottomline');
-document.querySelector('#buttons').addEventListener('click', ({target}) => {
-    console.log(target.innerText);
-    let firstInput = screenEntry.innerHTML = target.innerText;
-    console.log('number 1: ' + firstInput);
+let count = 0;
+let numInput = [];
+let operator = '';
+
+let screenEntry = document.getElementById('bottomline');
+let screenSave = document.getElementById('topline');
+let buttons = Array.from(document.querySelectorAll('#buttons button'));
+
+buttons.forEach(function(button) {
+    button.addEventListener('click', ({target}) => {
+        if (target.innerText === '+' || target.innerText === '-' || target.innerText === '*' || target.innerText === '/') {
+            operator = target.innerText;
+        } else if (target.innerText === '=') {
+            operate(numInput[0], operator, numInput[1]);
+        } else {
+            numInput[count] = target.innerText;
+            count++;
+            screenSave.innerHTML = numInput.join('');
+        }
+    });
 });
+

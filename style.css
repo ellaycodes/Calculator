@@ -41,6 +41,7 @@ body {
     height: 250px;
     flex-wrap: wrap;
     font-family: 'Inconsolata', monospace;
+    pointer-events: none;
 }
 
 button {
@@ -53,6 +54,11 @@ button {
     box-shadow: inset ;
     font-family: 'Inconsolata', monospace;
     font-size: large;
+    pointer-events: auto;
+}
+
+button:hover {
+    background-color: pink;
 }
 
 #equals {
