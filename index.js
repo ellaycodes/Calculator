@@ -18,42 +18,73 @@ function division(a, b) {
     return x;
 };
 
+function exponent(a, b) {
+    let x = a ** b;
+    return x;
+};
+
 
 
 function operate(a, operator, b) {
+    a = parseFloat(a.replace(",", "."));
+    b = parseFloat(b.replace(",", "."));
     switch (operator) {
         case '+':
-        return addition(a, b);
+            return addition(a, b);
         case '-':
-        return subtraction(a, b);
+            return subtraction(a, b);
         case '*':
-        return multiplication(a, b);
+            return multiplication(a, b);
         case '/':
-        return division(a, b);
+            return division(a, b);
+        case 'EXP':
+            return exponent(a, b);
         default:
-        return "Invalid operator";
+        return "Invalid";
     };
 };
 
 let count = 0;
-let numInput = [];
-let operator = '';
+var numInput = [];
+let currentOperator = '';
+let display = "";
 
-let screenEntry = document.getElementById('bottomline');
-let screenSave = document.getElementById('topline');
+//getting id's from html//
+let bottomLine = document.getElementById('bottomline');
+let topLine = document.getElementById('topline');
 let buttons = Array.from(document.querySelectorAll('#buttons button'));
 
 buttons.forEach(function(button) {
     button.addEventListener('click', ({target}) => {
-        if (target.innerText === '+' || target.innerText === '-' || target.innerText === '*' || target.innerText === '/') {
-            operator = target.innerText;
-        } else if (target.innerText === '=') {
-            operate(numInput[0], operator, numInput[1]);
+        if (target.textContent === '-' || target.textContent === '+' || target.textContent === '/' || target.textContent === '*') {
+            currentOperator = target.textContent;
+            display += currentOperator;
+            topLine.textContent = display;
+        } else if (target.textContent === 'EXP') {
+            currentOperator = target.textContent;
+            display += '^';
+            topLine.textContent = display;
+        } else if (target.textContent === '=') {
+            let result = operate(numInput[0], currentOperator, numInput[1]);
+            bottomLine.textContent = result;
+            display = "";
+        } else if (target.textContent === 'AC') {
+            topLine.innerHTML = '0';
+            bottomLine.innerHTML = '';
+            numInput = [];
+            count = 0;
+            display = "";
+        } else if (target.textContent === 'CE' && numInput.length > 0) {
+            numInput.pop();
+            count--;
+            display = numInput.join('');
+            topLine.textContent = display;
         } else {
-            numInput[count] = target.innerText;
+            numInput[count] = target.textContent;
             count++;
-            screenSave.innerHTML = numInput.join('');
+            display += target.textContent;
+            topLine.textContent = display;
+            console.log(numInput);
         }
     });
 });
-
