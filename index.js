@@ -14,11 +14,17 @@ function multiplication(a, b) {
 };
 
 function division(a, b) {
+    if (b == 0) {
+        return "Invalid input: division by zero";
+    }
     let x = a / b;
     return x;
 };
 
 function exponent(a, b) {
+    if (b <= 0 && a === 0) {
+        return "Invalid input: base is zero, exponent must be greater than zero"
+    }
     let x = a ** b;
     return x;
 };
@@ -28,6 +34,9 @@ function exponent(a, b) {
 function operate(a, operator, b) {
     a = parseFloat(a.replace(",", "."));
     b = parseFloat(b.replace(",", "."));
+    if (isNaN(a) || isNaN(b)) {
+        return "Invalid input: must input numbers"
+    }
     switch (operator) {
         case '+':
             return addition(a, b);
@@ -44,10 +53,11 @@ function operate(a, operator, b) {
     };
 };
 
-let count = 0;
-var numInput = [];
+let currentArrayIndex = 0;;
+var numInput = [[]];
 let currentOperator = '';
 let display = "";
+let buttonPressed = false;
 
 //getting id's from html//
 let bottomLine = document.getElementById('bottomline');
@@ -56,35 +66,51 @@ let buttons = Array.from(document.querySelectorAll('#buttons button'));
 
 buttons.forEach(function(button) {
     button.addEventListener('click', ({target}) => {
-        if (target.textContent === '-' || target.textContent === '+' || target.textContent === '/' || target.textContent === '*') {
+        if (target.textContent === '-' || target.textContent === '+' || 
+        target.textContent === '/' || target.textContent === '*') {
+            buttonPressed = true;
             currentOperator = target.textContent;
             display += currentOperator;
             topLine.textContent = display;
+            numInput.push([]); // Create a new sub-array
+            currentArrayIndex++;
         } else if (target.textContent === 'EXP') {
             currentOperator = target.textContent;
             display += '^';
             topLine.textContent = display;
         } else if (target.textContent === '=') {
-            let result = operate(numInput[0], currentOperator, numInput[1]);
+            let result = parseFloat(numInput[0].join(''));
+            for (let i = 0; i < currentArrayIndex-1; i++) {
+                if (!isNaN(result)) {
+            result = operate(result, currentOperator, numInput[i+1].join('')) * 10 / 10;
+            } else {
+                bottomLine.textContent = "Invalid Operator";
+                return;
+            }
+        }
             bottomLine.textContent = result;
             display = "";
         } else if (target.textContent === 'AC') {
-            topLine.innerHTML = '0';
-            bottomLine.innerHTML = '';
-            numInput = [];
-            count = 0;
+            topLine.textContent = '0';
+            bottomLine.textContent = '';
+            numInput[0] = [];
+            currentArrayIndex = 0;
             display = "";
-        } else if (target.textContent === 'CE' && numInput.length > 0) {
-            numInput.pop();
-            count--;
-            display = numInput.join('');
+            buttonPressed = false;
+        } else if (target.textContent === 'CE' && numInput[currentArrayIndex].length > 0) {
+            numInput[currentArrayIndex].pop();
+            display = numInput[currentArrayIndex].join('');
             topLine.textContent = display;
         } else {
-            numInput[count] = target.textContent;
-            count++;
+            numInput[currentArrayIndex].push(target.textContent);
             display += target.textContent;
             topLine.textContent = display;
-            console.log(numInput);
+            if (buttonPressed) {
+                numInput[currentArrayIndex].push(target.textContent);
+                topLine.textContent = display;
+            }
+            console.log('numInput1: ' + numInput[currentArrayIndex]);
         }
     });
 });
+
