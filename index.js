@@ -14,17 +14,11 @@ function multiplication(a, b) {
 };
 
 function division(a, b) {
-    if (b == 0) {
-        return "Invalid input: division by zero";
-    }
     let x = a / b;
     return x;
 };
 
 function exponent(a, b) {
-    if (b <= 0 && a === 0) {
-        return "Invalid input: base is zero, exponent must be greater than zero"
-    }
     let x = a ** b;
     return x;
 };
@@ -34,9 +28,6 @@ function exponent(a, b) {
 function operate(a, operator, b) {
     a = parseFloat(a.replace(",", "."));
     b = parseFloat(b.replace(",", "."));
-    if (isNaN(a) || isNaN(b)) {
-        return "Invalid input: must input numbers"
-    }
     switch (operator) {
         case '+':
             return addition(a, b);
@@ -53,8 +44,10 @@ function operate(a, operator, b) {
     };
 };
 
-let currentArrayIndex = 0;;
-var numInput = [[]];
+let count1 = 0;
+let count2 = 0;
+var numInput1 = [];
+var numInput2 = [];
 let currentOperator = '';
 let display = "";
 let buttonPressed = false;
@@ -66,51 +59,44 @@ let buttons = Array.from(document.querySelectorAll('#buttons button'));
 
 buttons.forEach(function(button) {
     button.addEventListener('click', ({target}) => {
-        if (target.textContent === '-' || target.textContent === '+' || 
-        target.textContent === '/' || target.textContent === '*') {
+        if (target.textContent === '-' || target.textContent === '+' || target.textContent === '/' || target.textContent === '*') {
+            Object.freeze(numInput1);
             buttonPressed = true;
             currentOperator = target.textContent;
             display += currentOperator;
             topLine.textContent = display;
-            numInput.push([]); // Create a new sub-array
-            currentArrayIndex++;
         } else if (target.textContent === 'EXP') {
             currentOperator = target.textContent;
             display += '^';
             topLine.textContent = display;
         } else if (target.textContent === '=') {
-            let result = parseFloat(numInput[0].join(''));
-            for (let i = 0; i < currentArrayIndex-1; i++) {
-                if (!isNaN(result)) {
-            result = operate(result, currentOperator, numInput[i+1].join('')) * 10 / 10;
-            } else {
-                bottomLine.textContent = "Invalid Operator";
-                return;
-            }
-        }
+            let result = Math.round(operate(numInput1.join(''), currentOperator, numInput2.join('')) * 10) / 10;
             bottomLine.textContent = result;
             display = "";
         } else if (target.textContent === 'AC') {
-            topLine.textContent = '0';
-            bottomLine.textContent = '';
-            numInput[0] = [];
-            currentArrayIndex = 0;
+            topLine.innerHTML = '0';
+            bottomLine.innerHTML = '';
+            numInput1 = [];
+            count1 = 0;
+            numInput2 = [];
+            count2 = 0;
             display = "";
             buttonPressed = false;
-        } else if (target.textContent === 'CE' && numInput[currentArrayIndex].length > 0) {
-            numInput[currentArrayIndex].pop();
-            display = numInput[currentArrayIndex].join('');
+        } else if (target.textContent === 'CE' && numInput1.length > 0) {
+            numInput1.pop();
+            count1--;
+            display = numInput1.join('');
             topLine.textContent = display;
         } else {
-            numInput[currentArrayIndex].push(target.textContent);
+            numInput1[count1] = target.textContent;
+            count1++;
             display += target.textContent;
             topLine.textContent = display;
             if (buttonPressed) {
-                numInput[currentArrayIndex].push(target.textContent);
-                topLine.textContent = display;
+                numInput2.push(target.textContent);
             }
-            console.log('numInput1: ' + numInput[currentArrayIndex]);
+            console.log('numInput1: ' + numInput1);
+            console.log('numInput2: ' + numInput2);
         }
     });
 });
-
