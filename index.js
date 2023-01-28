@@ -27,74 +27,88 @@ function exponent(a, b) {
 
 
 
-function operate(a, operator, b) {
-    switch (operator) {
+function operate(operands, operators) {
+    let i = 0;
+    let result = parseFloat(operands[i]);
+    for (let i = 0; i < operators.length; i++) {
+    switch (operators[i]) {
         case '+':
-            return addition(a, b);
+            result = addition(result, parseFloat(operands[i+1]));
+            break;
         case '-':
-            return subtraction(a, b);
+            result = subtraction(result, parseFloat(operands[i+1]));
+            break;
         case '*':
-            return multiplication(a, b);
+            result = multiplication(result, parseFloat(operands[i+1]));
+            break;
         case '/':
-            return division(a, b);
+            result = division(result, parseFloat(operands[i+1]));
+            break;
         case 'EXP':
-            return exponent(a, b);
+            result = exponent(result, parseFloat(operands[i+1]));
+            break;
         default:
-        return "Invalid";
-    };
-};
+            return 'Invalid operator';
+        }
+    }
+    return result; 
+}
 
-var numInput = [];
-let currentOperator = '';
+var operands = [];
 let display = "";
-let subInput = [];
-let counter = 0;
+let operators = [];
+let numInput = [];
 
 //getting id's from html//
 let bottomLine = document.getElementById('bottomline');
 let topLine = document.getElementById('topline');
 let buttons = Array.from(document.querySelectorAll('#buttons button'));
-
+let operatorButton = Array.from(document.querySelectorAll('#operator button'));
+let numberButton = Array.from(document.querySelectorAll('#numbuttons button'));
+let equalsButton = Array.from(document.querySelectorAll('#equals button'));
 
         buttons.forEach(function(button) {
             button.addEventListener('click', ({target}) => {
+
                 if (target.textContent === '-' || target.textContent === '+' || target.textContent === '/' || target.textContent === '*') {
-                    currentOperator = target.textContent;
-                    display += currentOperator;
+                    operators.push(target.textContent);
+                    display += target.textContent;
                     topLine.textContent = display;
-                    numInput.push(subInput);
-                    counter++
-                    console.log(numInput);
-                    console.log(subInput);
+                    operands.push(numInput.join(''));
+                    numInput = [];
+
                 } else if (target.textContent === 'EXP') {
-                    currentOperator = target.textContent;
+                    operators.push(target.textContent);
                     display += '^';
                     topLine.textContent = display;
-                    numInput.push(subInput);
-                    counter++
-                    console.log(numInput);
+                    operands.push(numInput.join(''));
+                    numInput = [];
+
                 } else if (target.textContent === '=') {
-                    let i = counter -1;
-                    let result = operate(numInput[i], currentOperator, numInput[i+1]) * 10 / 10;
-                    console.log(numInput);
-                    console.log(numInput[i+1]);
+                    operands.push(numInput.join(''));
+                    numInput = [];
+                    let result = operate(operands, operators);
                     bottomLine.textContent = result;
-                    display = "";
+
                 } else if (target.textContent === 'AC') {
                     topLine.textContent = '0';
                     bottomLine.textContent = '';
-                    counter = 0;
-                    numInput = [''];
+                    numInput = [];
                     display = "";
-                    console.log(numInput)
-                } else if (target.textContent === 'CE' && subInput.length > 0) {
-                    subInput.pop();
-                    display = subInput.join('');
+                    operands = [];
+                    operators = [];
+                    
+                } else if (target.textContent === 'CE' && numInput.length > 0) {
+                    let deleteNum = topLine.textContent.split('');
+                    deleteNum.pop();
+                    display = deleteNum.join('');
                     topLine.textContent = display;
+
                 } else {
-                    subInput.push(target.textContent);
+                    numInput.push(target.textContent);
                     display += target.textContent;
                     topLine.textContent = display;
         }
     });
 });
+
