@@ -3,7 +3,6 @@ body {
     justify-content: center;
     align-items: center;
 }
-
 #calculator {
     display: flex;
     justify-content: center;
@@ -15,7 +14,6 @@ body {
     border-radius: 25px;
     margin-top: 200px;
 }
-
 #screen {
     display: flex;
     justify-content: flex-end;
@@ -32,7 +30,6 @@ body {
     padding: 10px;
     color: hotpink;
 }
-
 #buttons{
     display: flex;
     justify-content: center;
@@ -43,7 +40,6 @@ body {
     font-family: 'Inconsolata', monospace;
     pointer-events: none;
 }
-
 button {
     border-radius: 25px;
     width: 45px;
@@ -57,28 +53,22 @@ button {
     pointer-events: auto;
     box-shadow: inset 2px 2px 5px 0.5px white;
 }
-
 button:hover {
     background-color: pink;
 }
-
 button:active {
     background-color: hotpink;
     box-shadow: inset 2px 2px 5px 0.5px #EF1583;
 }
-
 #equals {
     width: 109px;
 }
-
 #AC {
     width: 109px;
 }
-
 p {
     margin: 0px;
 }
-
 #topline {
     font-size: 18pt;
 }

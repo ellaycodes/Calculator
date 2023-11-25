@@ -59,7 +59,6 @@ let display = "";
 let operators = [];
 let numInput = [];
 
-//getting id's from html//
 let bottomLine = document.getElementById('bottomline');
 let topLine = document.getElementById('topline');
 let buttons = Array.from(document.querySelectorAll('#buttons button'));
